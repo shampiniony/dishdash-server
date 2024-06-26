@@ -5,12 +5,12 @@ import (
 )
 
 type Lobby struct {
-	ID            string
-	CreatedAt     time.Time
-	Location      Coordinate
-	LobbySettings *LobbySettings
-	Cards         []*Card
-	Matches       []*Match
-	FinalVotes    []*FinalVote
-	Swipes        []*Swipe
+	ID            string         `json:"id"`
+	CreatedAt     time.Time      `json:"createdAt"`
+	Location      Coordinate     `json:"location"`
+	LobbySettings *LobbySettings `json:"lobbySettings"`
+	Cards         []*Card        `json:"cards"`
+	Matches       []*Match       `json:"matches"`
+	FinalVotes    []*FinalVote   `json:"finalVotes"`
+	Swipes        []*Swipe       `json:"swipes"`
 }

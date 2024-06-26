@@ -27,6 +27,7 @@ func SetupHandlers(s *socketio.Server, useCases usecase.Cases) {
 			return
 		}
 		_, ok := conn.Context().(*entities.User)
+
 		if ok {
 			return
 		}
@@ -36,13 +37,11 @@ func SetupHandlers(s *socketio.Server, useCases usecase.Cases) {
 			_ = conn.Close()
 			return
 		}
-
 		lobby, err := entities.FindLobby(domLobby, useCases.Card)
 		if err != nil {
 			_ = conn.Close()
 			return
 		}
-
 		u, err := useCases.User.GetUserByID(context.Background(), joinEvent.UserID)
 		if err != nil {
 			_ = conn.Close()
@@ -87,6 +86,7 @@ func SetupHandlers(s *socketio.Server, useCases usecase.Cases) {
 	})
 
 	s.OnEvent("/", eventSettingsUpdate, func(conn socketio.Conn, msg string) {
+		log.Println(msg)
 		var updateEvent settingsUpdateEvent
 		err := json.Unmarshal([]byte(msg), &updateEvent)
 		if err != nil {
@@ -149,6 +149,7 @@ func SetupHandlers(s *socketio.Server, useCases usecase.Cases) {
 		card := u.Card()
 
 		match := u.Swipe(swipeEvent.SwipeType)
+		log.Println(match)
 		if match != nil {
 			s.BroadcastToRoom(
 				"",

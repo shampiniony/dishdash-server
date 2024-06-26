@@ -25,6 +25,9 @@ func (u *User) Card() *domain.Card {
 }
 
 func (u *User) Swipe(swipeType domain.SwipeType) *domain.Card {
+	log.Println(u.took)
+	log.Println(len(u.Lobby.cards))
+
 	if u.took >= len(u.Lobby.cards) {
 		u.took++
 		return nil
@@ -39,6 +42,9 @@ func (u *User) Swipe(swipeType domain.SwipeType) *domain.Card {
 		Type:    swipeType,
 	})
 
+	log.Println(swipeType)
+	log.Println(domain.LIKE)
+	log.Println(swipeType == domain.LIKE)
 	if swipeType == domain.LIKE {
 		card := u.Lobby.like(u.Card())
 		u.took++

@@ -29,7 +29,9 @@ func FindLobby(lobbyDomain *domain.Lobby, cardUseCase usecase.Card) (*Lobby, err
 	lobbiesLock.Lock()
 	defer lobbiesLock.Unlock()
 
+	log.Println(lobbyDomain.ID)
 	lobby, has := lobbies[lobbyDomain.ID]
+	log.Println(lobby, has)
 	if has {
 		log.Printf("find lobby: %s", lobbyDomain.ID)
 		return lobby, nil
