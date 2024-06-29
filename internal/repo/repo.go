@@ -22,5 +22,19 @@ type Tag interface {
 type Lobby interface {
 	CreateLobby(ctx context.Context, lobby *domain.Lobby) (*domain.Lobby, error)
 	DeleteLobbyByID(ctx context.Context, lobbyID string) error
-	NearestLobby(ctx context.Context, loc domain.Coordinate) (lobby *domain.Lobby, dist float64, err error)
+	NearestActiveLobby(ctx context.Context, loc domain.Coordinate) (lobby *domain.Lobby, dist float64, err error)
+	GetLobbyByID(ctx context.Context, id string) (*domain.Lobby, error)
+	GetCardsForSettings(ctx context.Context, loc domain.Coordinate, settings *domain.LobbySettings) ([]*domain.Card, error)
+	SetLobbyActive(ctx context.Context, id string, active bool) error
+}
+
+type User interface {
+	CreateUser(ctx context.Context, user *domain.User) (string, error)
+	UpdateUser(ctx context.Context, user *domain.User) (string, error)
+	GetUserByID(ctx context.Context, id string) (*domain.User, error)
+	GetAllUsers(ctx context.Context) ([]*domain.User, error)
+}
+
+type Swipe interface {
+	CreateSwipe(ctx context.Context, swipe *domain.Swipe) error
 }

@@ -10,6 +10,8 @@ type Cases struct {
 	Card  Card
 	Tag   Tag
 	Lobby Lobby
+	User  User
+	Swipe Swipe
 }
 
 type CardInput struct {
@@ -44,8 +46,41 @@ type LobbyInput struct {
 	Location domain.Coordinate `json:"location"`
 }
 
+type LobbySettingsInput struct {
+	LobbyID     string  `json:"lobbyID"`
+	PriceMin    int     `json:"priceMin"`
+	PriceMax    int     `json:"priceMax"`
+	MaxDistance float64 `json:"maxDistance"`
+	Tags        []*Tag  `json:"tags"`
+}
+
 type Lobby interface {
 	CreateLobby(ctx context.Context, lobbyInput LobbyInput) (*domain.Lobby, error)
 	DeleteLobbyByID(ctx context.Context, id string) error
-	NearestLobby(ctx context.Context, loc domain.Coordinate) (*domain.Lobby, float64, error)
+	NearestActiveLobby(ctx context.Context, loc domain.Coordinate) (*domain.Lobby, float64, error)
+	GetLobbyByID(ctx context.Context, id string) (*domain.Lobby, error)
+	GetCardsForSettings(ctx context.Context, loc domain.Coordinate, settings *domain.LobbySettings) ([]*domain.Card, error)
+	SetLobbyActive(ctx context.Context, id string, active bool) error
+}
+
+type UserInput struct {
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
+}
+
+type UserInputExtended struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
+}
+
+type User interface {
+	CreateUser(ctx context.Context, userInput UserInput) (*domain.User, error)
+	UpdateUser(ctx context.Context, userInput UserInputExtended) (*domain.User, error)
+	GetUserByID(ctx context.Context, id string) (*domain.User, error)
+	GetAllUsers(ctx context.Context) ([]*domain.User, error)
+}
+
+type Swipe interface {
+	CreateSwipe(ctx context.Context, swipe *domain.Swipe) error
 }
